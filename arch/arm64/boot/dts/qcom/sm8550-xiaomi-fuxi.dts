@@ -16,6 +16,12 @@
 
 /delete-node/ &rmtfs_mem;
 
+/* SM8550P doesn't have Modem DSP */
+/delete-node/ &mpss_dsm_mem;
+/delete-node/ &mpss_mem;
+/delete-node/ &q6_mpss_dtb_mem;
+/delete-node/ &remoteproc_mpss;
+
 / {
 	model = "Xiaomi 13";
 	compatible = "xiaomi,fuxi", "qcom,sm8550";
@@ -96,9 +102,10 @@
 		vdd-l15-supply = <&vreg_s6g_1p8>;
 		vdd-l17-supply = <&vreg_bob2>;
 
+        /* Xiaomi change for Fuxi Camera Modules */
 		vreg_bob1: bob1 {
 			regulator-name = "vreg_bob1";
-			regulator-min-microvolt = <3296000>;
+			regulator-min-microvolt = <3008000>;
 			regulator-max-microvolt = <3960000>;
 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
 		};
@@ -567,7 +574,7 @@
 	status = "okay";
 
 	display_panel: panel@0 {
-		compatible = "tcl,m2a-dsc";
+		compatible = "mdss,m3-38-0c-0a-dsc";
 		reg = <0>;
 
 		pinctrl-names = "default", "sleep";
@@ -595,6 +602,10 @@
 
 &gpu {
 	status = "okay";
+
+	zap-shader {
+		firmware-name = "qcom/sm8550/fuxi/a740_zap.mbn";
+	};
 };
 
 &tlmm {
